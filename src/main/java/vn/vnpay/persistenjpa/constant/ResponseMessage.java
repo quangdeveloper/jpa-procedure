@@ -1,4 +1,4 @@
-package vn.vnpay.persistenjpa.dto;
+package vn.vnpay.persistenjpa.constant;
 
 public interface ResponseMessage {
 
