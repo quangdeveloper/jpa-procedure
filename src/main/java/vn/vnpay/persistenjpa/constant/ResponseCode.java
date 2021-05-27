@@ -7,4 +7,5 @@ public interface   ResponseCode {
     String UPDATE_ERROR = "03";
     String BLOCK_ERROR = "04";
     String UNLOCK_ERROR = "05";
+    String NOT_FOUND = "404";
 }

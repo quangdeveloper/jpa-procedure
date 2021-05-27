@@ -71,7 +71,7 @@ public class MovieServiceImpl implements MovieService {
             if (entityManager == null) {
                 log.error("Can't create entityManager");
             }
-
+            entityManager.getTransaction().begin();
             StoredProcedureQuery storedProcedure = entityManager.createStoredProcedureQuery(MOVIE_CREATE, Movie.class);
             storedProcedure.registerStoredProcedureParameter("PI_NAME", String.class, ParameterMode.IN);
             storedProcedure.registerStoredProcedureParameter("PI_LANGUAGE", String.class, ParameterMode.IN);
@@ -81,20 +81,24 @@ public class MovieServiceImpl implements MovieService {
             storedProcedure.setParameter("PI_LANGUAGE", movieDTO.getLanguage());
             storedProcedure.setParameter("PI_YEAR", movieDTO.getReleaseYear());
             List<Movie> list = storedProcedure.getResultList();
+            entityManager.getTransaction().commit();
+            entityManager.close();
             return list.get(0);
 
         } catch (Exception exp) {
             return null;
         }
-    }@Override
+    }
+
+    @Override
     public Movie updateMovie(MovieDTO movieDTO) {
 
         try {
-             EntityManager entityManager = EntityManagerFactoryConfig.getInstance().createEntityManager();
+            EntityManager entityManager = EntityManagerFactoryConfig.getInstance().createEntityManager();
             if (entityManager == null) {
                 log.error("Can't create entityManager");
             }
-            log.error("Can't create entityManager");
+            entityManager.getTransaction().begin();
             StoredProcedureQuery storedProcedure = entityManager.createStoredProcedureQuery(MOVIE_UPDATE, Movie.class);
             storedProcedure.registerStoredProcedureParameter("PI_ID", Long.class, ParameterMode.IN);
             storedProcedure.registerStoredProcedureParameter("PI_NAME", String.class, ParameterMode.IN);
@@ -106,6 +110,8 @@ public class MovieServiceImpl implements MovieService {
             storedProcedure.setParameter("PI_LANGUAGE", movieDTO.getLanguage());
             storedProcedure.setParameter("PI_YEAR", movieDTO.getReleaseYear());
             List<Movie> list = storedProcedure.getResultList();
+            entityManager.getTransaction().commit();
+            entityManager.close();
             return list.get(0);
 
         } catch (Exception exp) {

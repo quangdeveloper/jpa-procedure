@@ -6,59 +6,64 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import vn.vnpay.persistenjpa.constant.ResponseCode;
+import vn.vnpay.persistenjpa.constant.ResponseMessage;
 import vn.vnpay.persistenjpa.dto.MovieDTO;
 import vn.vnpay.persistenjpa.dto.ResponseDTO;
-import vn.vnpay.persistenjpa.constant.ResponseMessage;
+import vn.vnpay.persistenjpa.dto.UserDTO;
 import vn.vnpay.persistenjpa.search.ObjectSearch;
 import vn.vnpay.persistenjpa.service.MovieService;
+import vn.vnpay.persistenjpa.service.UserService;
+
 @Slf4j
 @RestController
-@RequestMapping("/movie")
-public class MovieControlller {
+@RequestMapping("/user")
+public class UserControlller {
 
     @Autowired
-    private MovieService movieService;
-
-    @GetMapping()
-    public Object getAllMovie(){
-        log.info("call api get all movie");
-        return ResponseDTO.builder()
-                .code(ResponseCode.SUCCESS)
-                .message(ResponseMessage.SUCCESS)
-                .results(movieService.getAllMovie())
-                .build();
-    }
+    private UserService userService;
 
     @PostMapping("/get-by-filter")
-    public Object getMovieByFilter(@RequestBody ObjectSearch obj){
+    public Object getUserByFilter(@RequestBody ObjectSearch obj){
         log.info("call api get by filter movie");
         return ResponseDTO.builder()
                 .code(ResponseCode.SUCCESS)
                 .message(ResponseMessage.SUCCESS)
-                .results(movieService.getByFilterMovie(obj))
+                .results(null)
+                .build();
+    }
+
+
+    @GetMapping("/get-by-id")
+    public Object getById(@RequestParam("id") Long id){
+        log.info("call api get by filter movie");
+        return ResponseDTO.builder()
+                .code(ResponseCode.SUCCESS)
+                .message(ResponseMessage.SUCCESS)
+                .results(userService.getById(id))
                 .build();
     }
 
     @PostMapping("/create")
-    public Object createMovie(@RequestBody MovieDTO obj){
+    public Object createUser(@RequestBody UserDTO obj){
 
-        log.info("call api create movie", "000");
+        log.info("call api create movie");
         return ResponseDTO.builder()
                 .code(ResponseCode.SUCCESS)
                 .message(ResponseMessage.SUCCESS)
-                .results(movieService.createMovie(obj))
+                .results(userService.create(obj))
                 .build();
     }
 
     @PostMapping("/update")
-    public Object updateMovie(@RequestBody MovieDTO obj){
-        log.info("call api update movie {}", "0000");
+    public Object updateUser(@RequestBody UserDTO obj){
+        log.info("call api update movie ");
         return ResponseDTO.builder()
                 .code(ResponseCode.SUCCESS)
                 .message(ResponseMessage.SUCCESS)
-                .results(movieService.updateMovie(obj))
+                .results(userService.update(obj))
                 .build();
     }
 }

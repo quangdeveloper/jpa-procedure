@@ -8,4 +8,5 @@ public interface ResponseMessage {
     String UPDATE_ERROR = "Cập nhật thành công";
     String BLOCK_ERROR = "Khóa bản ghi thành công";
     String UNLOCK_ERROR = "Mở khóa bản ghi thành công";
+    String NOT_FOUND = "Không có dữ liệu";
 }
