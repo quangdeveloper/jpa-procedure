@@ -6,6 +6,7 @@
 
     <persistence-unit name="films" transaction-type="RESOURCE_LOCAL">
         <class>vn.vnpay.persistenjpa.entity.Movie</class>
+        <class>vn.vnpay.persistenjpa.entity.User</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
         <properties>

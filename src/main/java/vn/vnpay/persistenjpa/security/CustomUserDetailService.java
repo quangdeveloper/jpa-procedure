@@ -11,7 +11,7 @@ import vn.vnpay.persistenjpa.constant.ResponseCode;
 import vn.vnpay.persistenjpa.constant.ResponseMessage;
 import vn.vnpay.persistenjpa.entity.User;
 import vn.vnpay.persistenjpa.exception.GeneralException;
-import vn.vnpay.persistenjpa.service.UserService;
+import vn.vnpay.persistenjpa.dao.UserDAO;
 
 @Slf4j
 @Service
@@ -19,7 +19,7 @@ import vn.vnpay.persistenjpa.service.UserService;
 public class CustomUserDetailService implements UserDetailsService {
 
     @Autowired
-    private UserService userService;
+    private UserDAO userDAO;
 
     /**
      *Lấy ra 1 userDetail thông qua tài username khi đăng nhập của người dùng
@@ -29,11 +29,11 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
 
-        User user = userService.getByUserName(s);
+        User user = userDAO.getByUserName(s);
 
         if (user == null) {
-            throw new GeneralException(ResponseCode.NOT_FOUND,
-                ResponseMessage.NOT_FOUND + " user " + s);
+            throw new GeneralException(ResponseCode.FAIL,
+                ResponseMessage.LOGIN_FAIL);
         }
         return new UserPrincipal(user);
     }
@@ -45,7 +45,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
     public UserDetails loadUserById(Long id) {
 
-        User user = userService.getById(id);
+        User user = userDAO.getById(id);
 
         if (user == null ){
             throw new GeneralException(ResponseCode.NOT_FOUND,

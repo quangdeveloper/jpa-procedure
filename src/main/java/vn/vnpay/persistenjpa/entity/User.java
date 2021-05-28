@@ -27,13 +27,13 @@ public class User {
     private String password;
 
     @Column(name = "S_FULL_NAME")
-    private String full_name;
+    private String fullName;
 
     @Column(name = "S_EMAIL")
     private String email;
 
     @Column(name = "N_ROLE_ID")
-    private Integer roleId;
+    private Long roleId;
 
 
     @Column(name = "N_STATUS")

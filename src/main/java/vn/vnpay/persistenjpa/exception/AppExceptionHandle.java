@@ -16,11 +16,11 @@ public class AppExceptionHandle {
     @ExceptionHandler(value = {GeneralException.class})
     protected ResponseEntity<ResponseDTO> generalException(GeneralException ex, WebRequest re){
         final  ResponseDTO responseDTO = ResponseDTO.builder()
-                .results(ex.getValue())
+                .results(null)
                 .code(ex.getCode())
                 .message(ex.getMessage())
                 .build();
-        log.error("[FlowerExceptionControlHandler.GeneralException: {}]", ex.getMessage());
+        log.error("[ExceptionControlHandler.GeneralException: {}]", ex.getMessage());
         return  new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 

@@ -21,7 +21,29 @@ public class UserPrincipal implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
+    public Integer getActive() {
+        return active;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
     private Integer active;
+
+    private String email;
+
+    private Long roleId;
+
+    private String fullName;
 
     public UserPrincipal() {
     }
@@ -39,6 +61,12 @@ public class UserPrincipal implements UserDetails {
         this.authorities = authorities;
 
         this.active = user.getStatus();
+
+        this.fullName = user.getFullName();
+
+        this.email = user.getEmail();
+
+        this.roleId = user.getRoleId();
     }
 
 

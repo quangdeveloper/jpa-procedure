@@ -1,92 +1,134 @@
 package vn.vnpay.persistenjpa.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import vn.vnpay.persistenjpa.config.EntityManagerFactoryConfig;
-import vn.vnpay.persistenjpa.dto.MovieDTO;
+import vn.vnpay.persistenjpa.constant.ResponseCode;
+import vn.vnpay.persistenjpa.constant.ResponseMessage;
+import vn.vnpay.persistenjpa.converter.UserConverter;
+import vn.vnpay.persistenjpa.dao.UserDAO;
+import vn.vnpay.persistenjpa.dto.ResponseDTO;
 import vn.vnpay.persistenjpa.dto.UserDTO;
-import vn.vnpay.persistenjpa.entity.Movie;
+import vn.vnpay.persistenjpa.dto.UserLoginDTO;
 import vn.vnpay.persistenjpa.entity.User;
+import vn.vnpay.persistenjpa.jwt.JWTTokenProvider;
 import vn.vnpay.persistenjpa.search.ObjectSearch;
+import vn.vnpay.persistenjpa.security.UserPrincipal;
 import vn.vnpay.persistenjpa.service.UserService;
 
-import javax.persistence.EntityManager;
-import javax.persistence.ParameterMode;
-import javax.persistence.StoredProcedureQuery;
 import java.util.List;
-
 
 @Service
 @Slf4j
-public class UserServiceImpl  implements UserService {
+public class UserServiceImpl implements UserService {
 
-    private static final String CREATE_USER ="USER_CREATE";
-    private static final String GET_BY_ID = "USER_GET_BY_ID";
-    private static final String GET_BY_USER_NAME ="USER_GET_BY_USER_NAME";
-    private  static final String GET_USER_NAME_AND_PASSWORD ="USER_GET_BY_USER_NAME_AND_PASS";
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JWTTokenProvider jwtTokenProvider;
+
+    @Autowired
+    private UserDAO userDAO;
 
     @Override
-    public User getById(Long id) {
-        try {
-            EntityManager entityManager = EntityManagerFactoryConfig.getInstance().createEntityManager();
-            if (entityManager == null) {
-                log.error("Can't create entityManager");
-            }
-            StoredProcedureQuery storedProcedure = entityManager.createStoredProcedureQuery(GET_BY_ID, User.class);
-            storedProcedure.registerStoredProcedureParameter("PI_ID", Long.class, ParameterMode.IN);
-            storedProcedure.setParameter("PI_ID", id);
-            return  (User) storedProcedure.getSingleResult();
-        } catch (Exception exp) {
-            return null;
+    public ResponseDTO login(UserLoginDTO userLoginDTO) {
+
+        try{
+            /** lấy authentication ra để tạo theo kiểu token*/
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            userLoginDTO.getUsername(),
+                            userLoginDTO.getPassword()
+                    )
+            );
+
+            /** thiết lập authentication */
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            UserPrincipal userPrincipal =  (UserPrincipal) authentication.getPrincipal();
+            String jwt = jwtTokenProvider.generateToken(userPrincipal);
+
+            UserDTO userDTO = UserDTO.builder()
+                    .id(userPrincipal.getId())
+                    .username(userPrincipal.getUsername())
+                    .fullName(userPrincipal.getFullName())
+                    .email(userPrincipal.getEmail())
+                    .roleId(userPrincipal.getRoleId())
+                    .status(userPrincipal.getActive())
+                    .token(jwt)
+                    .build();
+
+            return ResponseDTO.builder()
+                    .results(userDTO)
+                    .code(ResponseCode.SUCCESS)
+                    .message(ResponseMessage.SUCCESS)
+                    .build();
+
+        }catch (Exception exp){
+            log.error("Authentication exception {}", exp.getMessage());
+            return ResponseDTO.builder()
+                    .results(null)
+                    .code(ResponseCode.FAIL)
+                    .message(ResponseMessage.LOGIN_FAIL)
+                    .build();
         }
     }
 
     @Override
-    public User getByUserName(String username) {
-        try {
-            EntityManager entityManager = EntityManagerFactoryConfig.getInstance().createEntityManager();
-            if (entityManager == null) {
-                log.error("Can't create entityManager");
-            }
-            StoredProcedureQuery storedProcedure = entityManager.createStoredProcedureQuery(GET_BY_USER_NAME, User.class);
-            storedProcedure.registerStoredProcedureParameter("PI_USER_NAME", String.class, ParameterMode.IN);
-            storedProcedure.setParameter("PI_USER_NAME", username);
-            return  (User) storedProcedure.getSingleResult();
-        } catch (Exception exp) {
-            return null;
-        }
+    public ResponseDTO getByFilter(ObjectSearch objectSearch) {
+
+        List<UserDTO> userDTOs = UserConverter.convertUsersToUserDTOs(
+                userDAO.getByFilter(objectSearch));
+
+        return ResponseDTO.builder()
+                .results(userDTOs)
+                .code(ResponseCode.SUCCESS)
+                .message(ResponseMessage.SUCCESS)
+                .build();
     }
 
     @Override
-    public User getByUserNameAndPassword(String username, String password) {
-        try {
-            EntityManager entityManager = EntityManagerFactoryConfig.getInstance().createEntityManager();
-            if (entityManager == null) {
-                log.error("Can't create entityManager");
-            }
-            StoredProcedureQuery storedProcedure = entityManager.createStoredProcedureQuery(GET_BY_USER_NAME, User.class);
-            storedProcedure.registerStoredProcedureParameter("PI_USER_NAME", String.class, ParameterMode.IN);
-            storedProcedure.registerStoredProcedureParameter("PI_PASSWORD", String.class, ParameterMode.IN);
-            storedProcedure.setParameter("PI_USER_NAME", username);
-            storedProcedure.setParameter("PI_PASSWORD", password);
-            return  (User) storedProcedure.getSingleResult();
-        } catch (Exception exp) {
-            return null;
-        }
+    public ResponseDTO getById(Long id) {
+
+        UserDTO userDTO  = UserConverter.convertUserToUserDTO(
+                userDAO.getById(id));
+
+        return ResponseDTO.builder()
+                .results(userDTO)
+                .code(ResponseCode.SUCCESS)
+                .message(ResponseMessage.SUCCESS)
+                .build();
     }
 
     @Override
-    public List<User> getByFilter(ObjectSearch objectSearch) {
-        return null;
+    public ResponseDTO create(UserDTO userDTO) {
+
+
+        UserDTO userRS  = UserConverter.convertUserToUserDTO(
+                userDAO.create(userDTO));
+
+        return ResponseDTO.builder()
+                .results(userRS)
+                .code(ResponseCode.SUCCESS)
+                .message(ResponseMessage.SUCCESS)
+                .build();
     }
 
     @Override
-    public User create(UserDTO userDTO) {
-        return null;
-    }
+    public ResponseDTO update(UserDTO userDTO) {
 
-    @Override
-    public User update(UserDTO userDTO) {
-        return null;
+        UserDTO userRS  = UserConverter.convertUserToUserDTO(
+                userDAO.update(userDTO));
+
+        return ResponseDTO.builder()
+                .results(userRS)
+                .code(ResponseCode.SUCCESS)
+                .message(ResponseMessage.SUCCESS)
+                .build();
     }
 }

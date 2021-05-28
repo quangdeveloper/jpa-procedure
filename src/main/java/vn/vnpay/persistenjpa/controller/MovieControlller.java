@@ -12,14 +12,14 @@ import vn.vnpay.persistenjpa.dto.MovieDTO;
 import vn.vnpay.persistenjpa.dto.ResponseDTO;
 import vn.vnpay.persistenjpa.constant.ResponseMessage;
 import vn.vnpay.persistenjpa.search.ObjectSearch;
-import vn.vnpay.persistenjpa.service.MovieService;
+import vn.vnpay.persistenjpa.dao.MovieDAO;
 @Slf4j
 @RestController
 @RequestMapping("/movie")
 public class MovieControlller {
 
     @Autowired
-    private MovieService movieService;
+    private MovieDAO movieService;
 
     @GetMapping()
     public Object getAllMovie(){

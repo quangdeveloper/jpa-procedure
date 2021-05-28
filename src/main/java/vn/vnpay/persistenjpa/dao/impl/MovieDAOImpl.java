@@ -1,4 +1,4 @@
-package vn.vnpay.persistenjpa.service.impl;
+package vn.vnpay.persistenjpa.dao.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -6,7 +6,7 @@ import vn.vnpay.persistenjpa.config.EntityManagerFactoryConfig;
 import vn.vnpay.persistenjpa.dto.MovieDTO;
 import vn.vnpay.persistenjpa.entity.Movie;
 import vn.vnpay.persistenjpa.search.ObjectSearch;
-import vn.vnpay.persistenjpa.service.MovieService;
+import vn.vnpay.persistenjpa.dao.MovieDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class MovieServiceImpl implements MovieService {
+public class MovieDAOImpl implements MovieDAO {
 
 
     private final String MOVIE_GET_ALL = "MOVIE_GET_ALL";

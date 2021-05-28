@@ -12,14 +12,15 @@ public class EntityManagerFactoryConfig {
     private static final String PERSISTEN_NAME = "films";
     private static volatile EntityManagerFactory entityManagerFactory;
 
-  private EntityManagerFactoryConfig(){}
+    private EntityManagerFactoryConfig() {
+    }
 
-  public static  EntityManagerFactory getInstance(){
-      if (entityManagerFactory == null){
-          synchronized (EntityManagerFactoryConfig.class){
-              entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTEN_NAME);
-          }
-      }
-      return entityManagerFactory;
-  }
+    public static EntityManagerFactory getInstance() {
+        if (entityManagerFactory == null) {
+            synchronized (EntityManagerFactoryConfig.class) {
+                entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTEN_NAME);
+            }
+        }
+        return entityManagerFactory;
+    }
 }

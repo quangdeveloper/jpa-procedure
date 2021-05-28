@@ -15,9 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import vn.vnpay.register.jwt.JWTAuthenticationEntryPoint;
-import vn.vnpay.register.jwt.JWTAuthenticationFilter;
-import vn.vnpay.register.security.CustomUserDetailService;
+import vn.vnpay.persistenjpa.jwt.JWTAuthenticationEntryPoint;
+import vn.vnpay.persistenjpa.jwt.JWTAuthenticationFilter;
+import vn.vnpay.persistenjpa.security.CustomUserDetailService;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(

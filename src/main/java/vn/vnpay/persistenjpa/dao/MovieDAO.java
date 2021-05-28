@@ -1,4 +1,4 @@
-package vn.vnpay.persistenjpa.service;
+package vn.vnpay.persistenjpa.dao;
 
 import vn.vnpay.persistenjpa.dto.MovieDTO;
 import vn.vnpay.persistenjpa.entity.Movie;
@@ -6,7 +6,7 @@ import vn.vnpay.persistenjpa.search.ObjectSearch;
 
 import java.util.List;
 
-public interface MovieService {
+public interface MovieDAO {
 
     List<Movie> getAllMovie();
     List<Movie> getByFilterMovie(ObjectSearch objectSearch);

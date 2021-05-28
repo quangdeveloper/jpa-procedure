@@ -21,5 +21,9 @@ public class ObjectSearch {
     @JsonProperty("year")
     private Integer year;
 
+    // for user
+    private Long roleId;
+
+
 
 }

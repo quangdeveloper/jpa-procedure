@@ -7,4 +7,6 @@ public class UserLoginDTO {
 
     private String username;
     private String password;
+    private String token;
+    private Long roleId;
 }
