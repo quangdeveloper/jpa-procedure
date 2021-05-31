@@ -1,9 +1,6 @@
 package vn.vnpay.persistenjpa.validate;
 
 import com.google.common.base.Strings;
-import vn.vnpay.persistenjpa.constant.ResponseCode;
-import vn.vnpay.persistenjpa.constant.ResponseMessage;
-import vn.vnpay.persistenjpa.dto.ResponseDTO;
 import vn.vnpay.persistenjpa.dto.UserDTO;
 import vn.vnpay.persistenjpa.enums.ActionEnum;
 
@@ -28,8 +25,6 @@ public class UserValidate {
         }else if (Validator.checkLength(userDTO.getUsername(), 3, 100)){
             errorMap.put(USER_NAME, "Tài khoản không hợp lệ");
         }
-
-
 
         if (Strings.isNullOrEmpty(userDTO.getFullName())){
             errorMap.put(FULL_NAME, "Vui lòng nhập họ và tên");

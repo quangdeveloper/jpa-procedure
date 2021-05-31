@@ -18,7 +18,7 @@ public class Validator {
     }
 
     public static boolean checkID(Long id){
-        if (id == null || id == 0) return false;
+        if (id == null || id == 0) return true;
         return false;
     }
 
