@@ -9,6 +9,7 @@ import vn.vnpay.persistenjpa.dto.UserDTO;
 import vn.vnpay.persistenjpa.entity.User;
 import vn.vnpay.persistenjpa.search.ObjectSearch;
 import vn.vnpay.persistenjpa.dao.UserDAO;
+import vn.vnpay.persistenjpa.search.UserSearch;
 
 import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
@@ -65,7 +66,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public List<User> getByFilter(ObjectSearch objectSearch) {
+    public List<User> getByFilter(UserSearch objectSearch) {
         try {
             EntityManager entityManager = EntityManagerFactoryConfig.getInstance().createEntityManager();
             if (entityManager == null) {

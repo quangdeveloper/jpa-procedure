@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class ObjectSearch {
+public abstract class ObjectSearch {
 
     @JsonProperty("keyword")
     private String keyword;
@@ -17,13 +17,4 @@ public class ObjectSearch {
 
     @JsonProperty("to_date")
     private String toDate;
-
-    @JsonProperty("year")
-    private Integer year;
-
-    // for user
-    private Long roleId;
-
-
-
 }

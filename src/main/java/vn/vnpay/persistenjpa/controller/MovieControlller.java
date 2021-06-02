@@ -11,6 +11,7 @@ import vn.vnpay.persistenjpa.constant.ResponseCode;
 import vn.vnpay.persistenjpa.dto.MovieDTO;
 import vn.vnpay.persistenjpa.dto.ResponseDTO;
 import vn.vnpay.persistenjpa.constant.ResponseMessage;
+import vn.vnpay.persistenjpa.search.MovieSearch;
 import vn.vnpay.persistenjpa.search.ObjectSearch;
 import vn.vnpay.persistenjpa.dao.MovieDAO;
 @Slf4j
@@ -32,7 +33,7 @@ public class MovieControlller {
     }
 
     @PostMapping("/get-by-filter")
-    public Object getMovieByFilter(@RequestBody ObjectSearch obj){
+    public Object getMovieByFilter(@RequestBody MovieSearch obj){
         log.info("call api get by filter movie");
         return ResponseDTO.builder()
                 .code(ResponseCode.SUCCESS)

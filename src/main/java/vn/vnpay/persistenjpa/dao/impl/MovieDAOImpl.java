@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import vn.vnpay.persistenjpa.config.EntityManagerFactoryConfig;
 import vn.vnpay.persistenjpa.dto.MovieDTO;
 import vn.vnpay.persistenjpa.entity.Movie;
+import vn.vnpay.persistenjpa.search.MovieSearch;
 import vn.vnpay.persistenjpa.search.ObjectSearch;
 import vn.vnpay.persistenjpa.dao.MovieDAO;
 
@@ -42,7 +43,7 @@ public class MovieDAOImpl implements MovieDAO {
     }
 
     @Override
-    public List<Movie> getByFilterMovie(ObjectSearch objectSearch) {
+    public List<Movie> getByFilterMovie(MovieSearch objectSearch) {
         try {
             EntityManager entityManager = EntityManagerFactoryConfig.getInstance().createEntityManager();
             if (entityManager == null) {

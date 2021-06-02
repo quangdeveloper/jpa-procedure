@@ -66,14 +66,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .and()
                 .authorizeRequests()
-//                .antMatchers(
-//                        "/users/login/**",
-//                        "/swagger-ui.html/**",
-//                        "/swagger-resources",
-//                        "/swagger-resources/**",
-//                        "/flowerInMeLinh/**"
-//                ).permitAll()
-                .antMatchers("/**").permitAll();
+                .antMatchers(
+                        "/login/**",
+                        "/swagger-ui.html/**",
+                        "/swagger-resources",
+                        "/swagger-resources/**"
+                ).permitAll()
+                .antMatchers("/**").authenticated();
 
         http.addFilterBefore(JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }

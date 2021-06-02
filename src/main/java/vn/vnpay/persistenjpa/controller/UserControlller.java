@@ -16,6 +16,7 @@ import vn.vnpay.persistenjpa.dto.UserDTO;
 import vn.vnpay.persistenjpa.enums.ActionEnum;
 import vn.vnpay.persistenjpa.search.ObjectSearch;
 import vn.vnpay.persistenjpa.dao.UserDAO;
+import vn.vnpay.persistenjpa.search.UserSearch;
 import vn.vnpay.persistenjpa.service.UserService;
 import vn.vnpay.persistenjpa.validate.UserValidate;
 
@@ -30,7 +31,7 @@ public class UserControlller {
     private UserService userService;
 
     @PostMapping("/get-by-filter")
-    public ResponseEntity<ResponseDTO> getUserByFilter(@RequestBody ObjectSearch obj) {
+    public ResponseEntity<ResponseDTO> getUserByFilter(@RequestBody UserSearch obj) {
         log.info("call api get by filter user");
         return ResponseEntity.ok(userService.getByFilter(obj));
     }

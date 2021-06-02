@@ -17,6 +17,7 @@ import vn.vnpay.persistenjpa.dto.UserLoginDTO;
 import vn.vnpay.persistenjpa.entity.User;
 import vn.vnpay.persistenjpa.jwt.JWTTokenProvider;
 import vn.vnpay.persistenjpa.search.ObjectSearch;
+import vn.vnpay.persistenjpa.search.UserSearch;
 import vn.vnpay.persistenjpa.security.UserPrincipal;
 import vn.vnpay.persistenjpa.service.UserService;
 
@@ -80,7 +81,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseDTO getByFilter(ObjectSearch objectSearch) {
+    public ResponseDTO getByFilter(UserSearch objectSearch) {
 
         List<UserDTO> userDTOs = UserConverter.convertUsersToUserDTOs(
                 userDAO.getByFilter(objectSearch));
